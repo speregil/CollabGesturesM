@@ -6,25 +6,21 @@ using UnityEngine.XR.ARSubsystems;
 using UnityEngine.InputSystem;
 using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 
-public class PlaceOnPlane : MonoBehaviour
+public class SetupPlane : MonoBehaviour
 {
     [SerializeField]
-    private GameObject objectModel;
-
-    [SerializeField]
-    private Camera mainCamera;
-
+    private GameObject AROrigin;
 
     private ARRaycastManager raycastManager;
     private ARPlaneManager planeManager;
 
-    private List<ARRaycastHit> hits;
+    ARPlane currentPlane;
 
-    private void Awake()
+    void Start()
     {
-        raycastManager = GetComponent<ARRaycastManager>();
-        planeManager = GetComponent<ARPlaneManager>();
-        hits = new List<ARRaycastHit>();
+        raycastManager = AROrigin.GetComponent<ARRaycastManager>();
+        planeManager = AROrigin.GetComponent<ARPlaneManager>();
+        currentPlane = null;
     }
 
     private void OnEnable()
@@ -43,13 +39,13 @@ public class PlaceOnPlane : MonoBehaviour
 
     public void Update()
     {
-        //MouseDown();
+        MouseDown();
     }
 
     private void FingerDown(EnhancedTouch.Finger finger)
     {
         if (finger.index != 0) return;
-        SpawnObject(finger.currentTouch.screenPosition);
+        CheckForPlane(finger.currentTouch.screenPosition);
     }
 
     private void MouseDown()
@@ -58,19 +54,26 @@ public class PlaceOnPlane : MonoBehaviour
         if (mouse.leftButton.wasPressedThisFrame)
         {
             Vector3 mousePosition = mouse.position.ReadValue();
-            SpawnObject(mousePosition);
+            CheckForPlane(mousePosition);
         }
     }
 
-    private void SpawnObject(Vector3 position)
+    private void CheckForPlane(Vector3 position)
     {
+        List<ARRaycastHit> hits = new List<ARRaycastHit>();
         if (raycastManager.Raycast(position,hits,TrackableType.PlaneWithinPolygon))
         {
-            foreach (ARRaycastHit hit in hits)
+            currentPlane = (ARPlane)hits[0].trackable;
+            foreach(ARPlane plane in planeManager.trackables)
             {
-                Pose pose = hit.pose;
-                GameObject obj = Instantiate(objectModel, pose.position, pose.rotation);
+                if (!GameObject.ReferenceEquals(plane.gameObject, currentPlane.gameObject))
+                {
+                    GameObject.Destroy(plane.gameObject);
+                }
             }
+            planeManager.enabled = false;
         }
     }
+
+    public ARPlane getCurrentPlane(){ return currentPlane; }
 }

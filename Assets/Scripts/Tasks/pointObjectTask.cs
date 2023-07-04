@@ -6,7 +6,6 @@ public class pointObjectTask : MonoBehaviour
 {
     private ParticleSystem[] emitters;
 
-    // Start is called before the first frame update
     void Start()
     {
         emitters = GetComponentsInChildren<ParticleSystem>();
