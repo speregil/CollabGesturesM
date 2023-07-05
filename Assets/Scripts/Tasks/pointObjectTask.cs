@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.ARFoundation;
 
-public class pointObjectTask : MonoBehaviour
+public class pointObjectTask : MonoBehaviour, ITask
 {
     private ParticleSystem[] emitters;
 
@@ -11,11 +12,20 @@ public class pointObjectTask : MonoBehaviour
         emitters = GetComponentsInChildren<ParticleSystem>();
     }
 
-    public void OnPlayTask()
+    public void SetupTask(ARPlane currentPlane)
+    {
+        Debug.Log("Setup");
+    }
+
+    public void PlayTask()
     {
         foreach (ParticleSystem p in emitters)
         {
             p.Play();
         }
+    }
+    public void Clean()
+    {
+        Debug.Log("Cleaning");
     }
 }

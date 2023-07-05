@@ -6,22 +6,59 @@ using UnityEngine.UI;
 public class TaskManager : MonoBehaviour
 {
     [SerializeField]
-    private Button playButton;
+    private GameObject setupPanel;
 
-    private GameObject modelObject;
+    [SerializeField]
+    private GameObject taskPanel;
+    
+    private List<ITask> tasksList;
+    private SetupManager setupManager;
 
-    // Start is called before the first frame update
+    private bool firstSetup;
+    private int currentTask;
+    
+
     void Start()
     {
-        modelObject = null;
+        setupManager = GetComponent<SetupManager>();
+        tasksList = new List<ITask>();
+        tasksList.Add(GetComponent<pointObjectTask>());
+        currentTask = 0;
+        firstSetup = true;
     }
 
-    private void Update()
+    void Update()
     {
-        if(modelObject == null)
+        if (!setupManager.IsOnSetup() && firstSetup)
         {
-            modelObject = GameObject.FindGameObjectWithTag("modelObject");
-            playButton.onClick.AddListener(() => modelObject.GetComponent<pointObjectTask>().OnPlayTask());
+            setupPanel.SetActive(false);
+            taskPanel.SetActive(true);
+            tasksList[currentTask].SetupTask(setupManager.GetCurrentPlane());
+            firstSetup = false;
+        }
+    }
+
+    public void OnPlayButton()
+    {
+        tasksList[currentTask].PlayTask();
+    }
+
+    public void OnNextButton()
+    {
+        if(currentTask +1 < tasksList.Count)
+        {
+            currentTask++;
+            tasksList[currentTask].SetupTask(setupManager.GetCurrentPlane());
+
+        }
+    }
+
+    public void OnPreviousButton()
+    {
+        if (currentTask - 1 >= 0)
+        {
+            currentTask--;
+            tasksList[currentTask].SetupTask(setupManager.GetCurrentPlane());
         }
     }
 }
