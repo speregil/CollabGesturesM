@@ -20,7 +20,7 @@ public class SetupManager : MonoBehaviour
     private ARRaycastManager raycastManager;    // Component for the AR raycast manager
     private ARPlaneManager planeManager;        // Component for the  plane detection
 
-    ARPlane currentPlane;                       // Current detected and selected plane
+    private ARPlane currentPlane;               // Current detected and selected plane
 
     private bool onSetup;                       // Determines if the session is on setup mode
 
@@ -32,11 +32,10 @@ public class SetupManager : MonoBehaviour
     {
         raycastManager = AROrigin.GetComponent<ARRaycastManager>();
         planeManager = AROrigin.GetComponent<ARPlaneManager>();
-        currentPlane = null;
-        onSetup = true;
+        EnterSetup();
     }
 
-    private void OnEnable()
+    void OnEnable()
     {
         // Enables touch interaction support
         EnhancedTouch.TouchSimulation.Enable();
@@ -46,7 +45,7 @@ public class SetupManager : MonoBehaviour
         EnhancedTouch.Touch.onFingerDown += FingerDown;
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
         // Disables touch interaction
         EnhancedTouch.Touch.onFingerDown -= FingerDown;

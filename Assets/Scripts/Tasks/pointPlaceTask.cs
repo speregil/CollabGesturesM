@@ -4,7 +4,7 @@ using UnityEngine.XR.ARFoundation;
 /**
  * Defines the behaviour of task 1: Point an object to someone
  */
-public class pointObjectTask : MonoBehaviour, ITask
+public class pointPlaceTask : MonoBehaviour, ITask
 {
     //------------------------------------------------------------------------------
     // Fields
@@ -26,7 +26,7 @@ public class pointObjectTask : MonoBehaviour, ITask
      */
     public void SetupTask(ARPlane currentPlane)
     {
-        Vector3 offset = new Vector3(0, (taskPrefab.transform.localScale.y) / 2, 0);
+        Vector3 offset = new Vector3(-0.5f, (taskPrefab.transform.localScale.y) / 2.0f, 0.5f);
         taskInstance = Instantiate(taskPrefab, currentPlane.transform.position + offset, currentPlane.transform.rotation);
         emitters = taskInstance.GetComponentsInChildren<ParticleSystem>();
     }
