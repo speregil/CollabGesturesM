@@ -14,11 +14,20 @@ public class pointPlaceTask : MonoBehaviour, ITask
     private GameObject taskPrefab;          // Prefab for the model used in the task
 
     private GameObject taskInstance;        // Current instance of the prefab model
-    private ParticleSystem[] emitters;      // Set of particle emmitters of the current instance 
+    private ParticleSystem[] emitters;      // Set of particle emmitters of the current instance
+    private string taskName;                // Show name of the task
 
     //------------------------------------------------------------------------------
     // Functions
     //------------------------------------------------------------------------------
+
+    /**
+     * Returns the show name of the task 
+     */
+    public string GetTaskName()
+    {
+        return taskName;
+    }
 
     /**
      * Creates an instance of the model on top of the plane given as parameter
@@ -26,7 +35,9 @@ public class pointPlaceTask : MonoBehaviour, ITask
      */
     public void SetupTask(ARPlane currentPlane)
     {
-        Vector3 offset = new Vector3(-0.5f, (taskPrefab.transform.localScale.y) / 2.0f, 0.5f);
+        taskName = "Point at Place";
+        Vector3 planeSize = currentPlane.GetComponent<Renderer>().bounds.size;
+        Vector3 offset = new Vector3(-0.0f, (taskPrefab.transform.localScale.y) / 2.0f, (planeSize.z / 2.0f) - 0.5f);
         taskInstance = Instantiate(taskPrefab, currentPlane.transform.position + offset, currentPlane.transform.rotation);
         emitters = taskInstance.GetComponentsInChildren<ParticleSystem>();
     }

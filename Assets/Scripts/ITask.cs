@@ -22,4 +22,9 @@ public interface ITask
      * changing to another task
      */
     public void Clean();
+
+    /**
+     * Defines the getter for the show name of the task 
+     */
+    public string GetTaskName();
 }
