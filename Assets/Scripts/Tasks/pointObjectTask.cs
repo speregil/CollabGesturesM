@@ -4,7 +4,7 @@ using UnityEngine.XR.ARFoundation;
 /**
  * Defines the behaviour of task 1: Point an object to someone
  */
-public class pointObjectTask : MonoBehaviour, ITask
+public class PointObjectTask : MonoBehaviour, ITask
 {
     //------------------------------------------------------------------------------
     // Fields

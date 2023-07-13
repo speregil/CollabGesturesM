@@ -47,9 +47,10 @@ public class TaskManager : MonoBehaviour
         // The behaviour must exist as a component of the TaskManager gameobject
         tasksList = new List<ITask>
         {
-            GetComponent<pointObjectTask>(),
-            GetComponent<pointPlaceTask>(),
-            GetComponent<pointPersonTask>()
+            GetComponent<PointObjectTask>(),
+            GetComponent<PointPlaceTask>(),
+            GetComponent<PointPersonTask>(),
+            GetComponent<HoldObjectTask>()
         };
 
         currentTask = 0;
